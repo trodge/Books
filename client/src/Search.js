@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import axios from 'axios';
-import "./App.css";
+import { capitalize, oxford } from './string.js';
+import './App.css';
 
 export default class Search extends Component {
     state = {
@@ -51,13 +52,4 @@ export default class Search extends Component {
             </div>
         </div>
     }
-}
-function capitalize(str) {
-    // Return parameter string with first character capitalized.
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-function oxford(arr) {
-    return Array.isArray(arr) && arr.length > 1 ? arr
-        .join(", ")
-        .replace(/ ((?:.(?!, ))+)$/, ' and $1') : arr;
 }
