@@ -8,7 +8,7 @@ export default class Search extends Component {
         books: []
     };
     componentDidMount() {
-        axios.get('/api/books').then(results => this.setState({ books: results }));
+        axios.get('/api/books').then(results => this.setState({ books: results.data }));
     }
     render() {
         return <div>
@@ -18,7 +18,7 @@ export default class Search extends Component {
                 </div>)}
                 <a href={book.link}>
                     <img src={book.image} alt={book.title} />
-                </a>)}
+                </a>
                 </div>)}
         </div>
     }
