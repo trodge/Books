@@ -1,20 +1,22 @@
-const express = require("express");
-const path = require("path");
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const axios = require('axios');
 const mongoose = require('mongoose');
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/googlebooks";
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/googlebooks';
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-const Book = mongoose.model("Article", new mongoose.Schema({
+const Book = mongoose.model('Article', new mongoose.Schema({
     title: {
         type: String,
         required: true
     },
     authors: {
-        type: String,
+        type: [String],
         required: true
     },
     description: {
@@ -39,11 +41,20 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
 }
 
 // Define API routes here
+app.get('/api/search/:terms', (req, res) => {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=\
+${req.params.terms}&key=${process.env.GOOGLE_API_KEY}`;
+    axios.get(url)
+        .then(results => {
+            res.send(results.data);
+        }).catch(err => res.send(err));
+});
+
 app.get('/api/books', (req, res) => {
     Book.find((err, books) => res.send(books));
 });
@@ -54,10 +65,10 @@ app.post('/api/books', (req, res) => {
 
 // Send every other request to the React app
 // Define any API routes before this runs
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./client/build/index.html"));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
 app.listen(PORT, () => {
-    console.log(`🌎 ==> API server now on port ${PORT}!`);
+    console.log(`🌎 ==> API server now on port ${PORT}!!!`);
 });

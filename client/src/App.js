@@ -1,34 +1,33 @@
-import React, { Component } from "react";
+import React from "react";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Link
 } from "react-router-dom";
-import logo from "./logo.svg";
+import Search from './Search.js';
+import Saved from './Saved.js';
 import "./App.css";
 
-export default class App extends Component {
-    render() {
-        return (
-            <Router>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/search">Search</Link>
-                        </li>
-                        <li>
-                            <Link to="/saved">Saved</Link>
-                        </li>
-                    </ul>
-                </nav>
-                <Switch>
-                    <Route path="/search">
-                        <Search />
-                    </Route>
-                    
-                </Switch>
-            </Router>
-        );
-    }
+export default function App() {
+    return <Router>
+        <nav>
+            <ul>
+                <li>
+                    <Link to="/search">Search</Link>
+                </li>
+                <li>
+                    <Link to="/saved">Saved</Link>
+                </li>
+            </ul>
+        </nav>
+        <Switch>
+            <Route path="/search">
+                <Search />
+            </Route>
+            <Route path="/saved">
+                <Saved />
+            </Route>
+        </Switch>
+    </Router>
 }
